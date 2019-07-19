@@ -23,7 +23,7 @@ class LaravelCliPasswordResetServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('cli-password-reset', function () {
-            return null;
+            return new CliPasswordResetCommand;
         });
 
         $this->mergeConfigFrom(__DIR__.'/../config/cli-password-reset.php', 'cli-password-reset');
