@@ -1,0 +1,36 @@
+{
+    "name": "noogic/laravel-cli-password-reset",
+    "description": "An artisan command to reset password for one or all users in a laravel application",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Joan Morell",
+            "email": "noogic@gmail.com"
+        }
+    ],
+    "require": {},
+    "require-dev": {
+        "orchestra/testbench": "^3.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Noogic\\LaravelCliPasswordReset\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Noogic\\LaravelCliPasswordReset\\Test\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Noogic\\LaravelCliPasswordReset\\LaravelCliPasswordResetServiceProvider"
+            ],
+            "aliases": {
+                "PasswordReset": "Noogic\\LaravelCliPasswordReset\\Facades\\CliPasswordReset"
+            }
+        }
+    }
+}
