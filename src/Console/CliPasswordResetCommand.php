@@ -9,18 +9,22 @@ class CliPasswordResetCommand extends Command
 {
     protected $signature = 'password:reset {--id=*} {--password=}';
     protected $description = 'Resets password for one or all users';
+
     protected $userClass;
+    protected $defaultPassword;
 
     public function __construct()
     {
         parent::__construct();
+
         $this->userClass = config('cli-password-reset.user');
+        $this->defaultPassword = config('cli-password-reset.password');
     }
 
     public function handle()
     {
         $id = $this->option('id');
-        $password = $this->option('password') ?: 'secret';
+        $password = $this->option('password') ?: $this->defaultPassword;
 
         if (! $id) {
             return $this->handleAllUsers($password);

@@ -2,6 +2,7 @@
 
 namespace Noogic\LaravelCliPasswordReset\Test;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 
 class PasswordResetTest extends TestBase
@@ -102,5 +103,21 @@ class PasswordResetTest extends TestBase
         $this->assertTrue(Hash::check('supersecret', $mike->password));
         $this->assertFalse(Hash::check('supersecret', $jane->password));
         $this->assertFalse(Hash::check('secret', $jane->password));
+    }
+
+    /** @test */
+    function default_password_can_be_changed_in_config()
+    {
+        $defaultPassword = 'new default';
+        $user = User::create(['name' => 'Adam', 'password' => Hash::make(rand(0, 100))]);
+
+        $this->assertFalse(Hash::check('secret', $user->password));
+        $this->assertFalse(Hash::check($defaultPassword, $user->password));
+
+        Config::set('cli-password-reset.password', $defaultPassword);
+        $this->artisan('password:reset');
+
+        $user->refresh();
+        $this->assertTrue(Hash::check($defaultPassword, $user->password));
     }
 }
