@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Hash;
 
 class CliPasswordResetCommand extends Command
 {
-    protected $signature = 'password:reset {--id=*}';
+    protected $signature = 'password:reset {--id=*} {--password=}';
     protected $description = 'Resets password for one or all users';
     protected $userClass;
 
@@ -20,24 +20,25 @@ class CliPasswordResetCommand extends Command
     public function handle()
     {
         $id = $this->option('id');
+        $password = $this->option('password') ?: 'secret';
 
         if (! $id) {
-            return $this->handleAllUsers();
+            return $this->handleAllUsers($password);
         }
 
         $userIds = is_array($id) ? $id : [$id];
 
         foreach ($userIds as $id) {
             $user = $this->userClass::findOrFail((int) $id);
-            $user->update(['password' => Hash::make('secret')]);
+            $user->update(['password' => Hash::make($password)]);
         }
     }
 
-    protected function handleAllUsers()
+    protected function handleAllUsers($password)
     {
         $users = $this->userClass::all();
         foreach ($users as $user) {
-            $user->update(['password' => Hash::make('secret')]);
+            $user->update(['password' => Hash::make($password)]);
         }
     }
 }

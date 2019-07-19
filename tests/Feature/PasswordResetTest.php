@@ -63,4 +63,44 @@ class PasswordResetTest extends TestBase
         $this->assertTrue(Hash::check('secret', $mike->password));
         $this->assertFalse(Hash::check('secret', $jane->password));
     }
+
+    /** @test */
+    function it_can_reset_all_passwords_with_custom_password()
+    {
+        User::create(['name' => 'Adam', 'password' => Hash::make(rand(0, 100))]);
+        User::create(['name' => 'Mike', 'password' => Hash::make(rand(0, 100))]);
+
+        foreach (User::all() as $user) {
+            $this->assertFalse(Hash::check('supersecret', $user->password));
+        }
+
+        $this->artisan('password:reset --password=supersecret');
+
+        foreach (User::all() as $user) {
+            $this->assertTrue(Hash::check('supersecret', $user->password));
+        }
+    }
+
+    /** @test */
+    function it_can_reset_many_users_password_with_custom_password()
+    {
+        $adam = User::create(['name' => 'Adam', 'password' => Hash::make(rand(0, 100))]);
+        $mike = User::create(['name' => 'Mike', 'password' => Hash::make(rand(0, 100))]);
+        $jane = User::create(['name' => 'Jane', 'password' => Hash::make(rand(0, 100))]);
+
+        foreach (User::all() as $user) {
+            $this->assertFalse(Hash::check('secret', $user->password));
+        }
+
+        $this->artisan('password:reset --id='.$adam->id.' --id='.$mike->id.' --password=supersecret');
+
+        $adam->refresh();
+        $mike->refresh();
+        $jane->refresh();
+
+        $this->assertTrue(Hash::check('supersecret', $adam->password));
+        $this->assertTrue(Hash::check('supersecret', $mike->password));
+        $this->assertFalse(Hash::check('supersecret', $jane->password));
+        $this->assertFalse(Hash::check('secret', $jane->password));
+    }
 }
