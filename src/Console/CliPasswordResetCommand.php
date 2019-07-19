@@ -19,14 +19,18 @@ class CliPasswordResetCommand extends Command
 
     public function handle()
     {
-        $id = (int) $this->option('id');
+        $id = $this->option('id');
 
         if (! $id) {
             return $this->handleAllUsers();
         }
 
-        $user = $this->userClass::findOrFail($id);
-        $user->update(['password' => Hash::make('secret')]);
+        $userIds = is_array($id) ? $id : [$id];
+
+        foreach ($userIds as $id) {
+            $user = $this->userClass::findOrFail((int) $id);
+            $user->update(['password' => Hash::make('secret')]);
+        }
     }
 
     protected function handleAllUsers()
