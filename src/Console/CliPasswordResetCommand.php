@@ -23,6 +23,10 @@ class CliPasswordResetCommand extends Command
 
     public function handle()
     {
+        if (config('app.env') === 'production') {
+            return $this->info("Can't reset passwords in production");
+        }
+
         $id = $this->option('id');
         $password = $this->option('password') ?: $this->defaultPassword;
 
@@ -36,6 +40,8 @@ class CliPasswordResetCommand extends Command
             $user = $this->userClass::findOrFail((int) $id);
             $user->update(['password' => Hash::make($password)]);
         }
+
+        $this->info('Passwords have been reset');
     }
 
     protected function handleAllUsers($password)
@@ -44,5 +50,7 @@ class CliPasswordResetCommand extends Command
         foreach ($users as $user) {
             $user->update(['password' => Hash::make($password)]);
         }
+
+        $this->info('All passwords have been reset');
     }
 }

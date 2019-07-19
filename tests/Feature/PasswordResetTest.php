@@ -120,4 +120,16 @@ class PasswordResetTest extends TestBase
         $user->refresh();
         $this->assertTrue(Hash::check($defaultPassword, $user->password));
     }
+
+    /** @test */
+    function it_doesnt_work_in_production()
+    {
+        $user = User::create(['name' => 'Adam', 'password' => Hash::make(rand(0, 100))]);
+
+        Config::set('app.env', 'production');
+        $this->artisan('password:reset');
+
+        $user->refresh();
+        $this->assertFalse(Hash::check('secret', $user->password));
+    }
 }
