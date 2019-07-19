@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Hash;
 class PasswordResetTest extends TestBase
 {
     /** @test */
-    public function it_can_reset_all_passwords()
+    function it_can_reset_all_passwords()
     {
         User::create(['name' => 'Adam', 'password' => Hash::make(rand(0, 100))]);
         User::create(['name' => 'Mike', 'password' => Hash::make(rand(0, 100))]);
@@ -18,9 +18,8 @@ class PasswordResetTest extends TestBase
 
         $this->artisan('password:reset');
 
-        $user->refresh();
-        $this->assertTrue(Hash::check('secret', $user->password));
-
-        $this->assertTrue(true);
+        foreach (User::all() as $user) {
+            $this->assertTrue(Hash::check('secret', $user->password));
+        }
     }
 }
