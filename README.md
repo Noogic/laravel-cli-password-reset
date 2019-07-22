@@ -38,7 +38,7 @@ php artisan password:reset
 
 You can **specify the password** without changing the default value:
 ```
-php artisan password:reset --pasword=anotherpassword
+php artisan password:reset --password=anotherpassword
 ```
 
 You can change the password **only to specified users** by passing the ids:
