@@ -6,10 +6,17 @@ This Laravel package adds the command `password:reset` to your Laravel artisan c
 
 ## Installation
 
-You can install this package via composer using:
+You can install this package as **dev only** dependency via composer using:
+```
+composer require --dev noogic/laravel-cli-password-reset
+```
+
+If you want to install as a direct dependency instead (not only for develop), then:
 ```
 composer require noogic/laravel-cli-password-reset
 ```
+>Just keep in mind that, anyways, it wont work in production environments for security reasons.
+
 
 The package will automatically register its services provider.
 
