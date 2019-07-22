@@ -1,6 +1,6 @@
 <?php
 
-namespace Noogic\LaravelCliPasswordsReset\Facades;
+namespace Noogic\PasswordReset\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

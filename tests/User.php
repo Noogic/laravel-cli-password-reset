@@ -1,9 +1,8 @@
 <?php
 
-namespace Noogic\LaravelCliPasswordReset\Test;
+namespace Noogic\PasswordReset\Test;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Hash;
 
 class User extends Model
 {

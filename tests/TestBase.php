@@ -1,11 +1,11 @@
 <?php
 
-namespace Noogic\LaravelCliPasswordReset\Test;
+namespace Noogic\PasswordReset\Test;
 
 use CreateUsersTable;
 use Illuminate\Support\Facades\Config;
-use Noogic\LaravelCliPasswordReset\LaravelCliPasswordResetServiceProvider;
-use Noogic\LaravelCliPasswordsReset\Facades\CliPasswordReset;
+use Noogic\PasswordReset\PasswordResetServiceProvider;
+use Noogic\PasswordReset\Facades\CliPasswordReset;
 use Orchestra\Testbench\TestCase;
 
 class TestBase extends TestCase
@@ -13,7 +13,7 @@ class TestBase extends TestCase
     protected function getPackageProviders($app)
     {
         return [
-            LaravelCliPasswordResetServiceProvider::class,
+            PasswordResetServiceProvider::class,
         ];
     }
 

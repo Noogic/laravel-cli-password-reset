@@ -1,14 +1,14 @@
 <?php
 
-namespace Noogic\LaravelCliPasswordReset\Console;
+namespace Noogic\PasswordReset\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Hash;
 
-class CliPasswordResetCommand extends Command
+class PasswordResetCommand extends Command
 {
     protected $signature = 'password:reset {--id=*} {--password=}';
-    protected $description = 'Resets password for one or all users';
+    protected $description = 'Resets password for one, many or all users';
 
     protected $userClass;
     protected $defaultPassword;
@@ -24,7 +24,7 @@ class CliPasswordResetCommand extends Command
     public function handle()
     {
         if (config('app.env') === 'production') {
-            return $this->info("Can't reset passwords in production");
+            return $this->error('Can\'t reset passwords in production');
         }
 
         $id = $this->option('id');
@@ -37,7 +37,12 @@ class CliPasswordResetCommand extends Command
         $userIds = is_array($id) ? $id : [$id];
 
         foreach ($userIds as $id) {
-            $user = $this->userClass::findOrFail((int) $id);
+            $user = $this->userClass::find((int) $id);
+            if (! $user) {
+                $this->error("User $id not found");
+                continue;
+            }
+
             $user->update(['password' => Hash::make($password)]);
         }
 

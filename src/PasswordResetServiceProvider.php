@@ -1,17 +1,17 @@
 <?php
 
-namespace Noogic\LaravelCliPasswordReset;
+namespace Noogic\PasswordReset;
 
 use Illuminate\Support\ServiceProvider;
-use Noogic\LaravelCliPasswordReset\Console\CliPasswordResetCommand;
+use Noogic\PasswordReset\Console\PasswordResetCommand;
 
-class LaravelCliPasswordResetServiceProvider extends ServiceProvider
+class PasswordResetServiceProvider extends ServiceProvider
 {
     public function boot()
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
-                CliPasswordResetCommand::class
+                PasswordResetCommand::class
             ]);
         }
 
@@ -23,7 +23,7 @@ class LaravelCliPasswordResetServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind('cli-password-reset', function () {
-            return new CliPasswordResetCommand;
+            return new PasswordResetCommand;
         });
 
         $this->mergeConfigFrom(__DIR__.'/../config/cli-password-reset.php', 'cli-password-reset');

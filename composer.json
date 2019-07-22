@@ -15,21 +15,21 @@
     },
     "autoload": {
         "psr-4": {
-            "Noogic\\LaravelCliPasswordReset\\": "src"
+            "Noogic\\PasswordReset\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Noogic\\LaravelCliPasswordReset\\Test\\": "tests"
+            "Noogic\\PasswordReset\\Test\\": "tests"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Noogic\\LaravelCliPasswordReset\\LaravelCliPasswordResetServiceProvider"
+                "Noogic\\PasswordReset\\PasswordResetServiceProvider"
             ],
             "aliases": {
-                "PasswordReset": "Noogic\\LaravelCliPasswordReset\\Facades\\CliPasswordReset"
+                "PasswordReset": "Noogic\\PasswordReset\\Facades\\CliPasswordReset"
             }
         }
     }

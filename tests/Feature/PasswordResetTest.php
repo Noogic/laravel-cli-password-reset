@@ -1,6 +1,6 @@
 <?php
 
-namespace Noogic\LaravelCliPasswordReset\Test;
+namespace Noogic\PasswordReset\Test;
 
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
