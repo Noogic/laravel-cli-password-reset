@@ -106,6 +106,23 @@ class PasswordResetTest extends TestBase
     }
 
     /** @test */
+    function it_cant_reset_passwords_with_empty_custom_password()
+    {
+        User::create(['name' => 'Adam', 'password' => Hash::make(rand(0, 100))]);
+        User::create(['name' => 'Mike', 'password' => Hash::make(rand(0, 100))]);
+
+        foreach (User::all() as $user) {
+            $this->assertFalse(Hash::check('supersecret', $user->password));
+        }
+
+        $this->artisan('password:reset --password=');
+
+        foreach (User::all() as $user) {
+            $this->assertFalse(Hash::check('supersecret', $user->password));
+        }
+    }
+
+    /** @test */
     function default_password_can_be_changed_in_config()
     {
         $defaultPassword = 'new default';
@@ -119,6 +136,22 @@ class PasswordResetTest extends TestBase
 
         $user->refresh();
         $this->assertTrue(Hash::check($defaultPassword, $user->password));
+    }
+
+    /** @test */
+    function default_password_cant_be_empty_in_config()
+    {
+        $defaultPassword = '';
+        $user = User::create(['name' => 'Adam', 'password' => Hash::make(rand(0, 100))]);
+
+        $this->assertFalse(Hash::check('secret', $user->password));
+        $this->assertFalse(Hash::check($defaultPassword, $user->password));
+
+        Config::set('cli-password-reset.password', $defaultPassword);
+        $this->artisan('password:reset');
+
+        $user->refresh();
+        $this->assertFalse(Hash::check($defaultPassword, $user->password));
     }
 
     /** @test */

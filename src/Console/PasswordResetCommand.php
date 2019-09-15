@@ -30,6 +30,10 @@ class PasswordResetCommand extends Command
         $id = $this->option('id');
         $password = $this->option('password') ?: $this->defaultPassword;
 
+        if (! $password) {
+            return $this->error('Password can\'t be empty');
+        }
+
         if (! $id) {
             return $this->handleAllUsers($password);
         }
