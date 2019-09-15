@@ -39,9 +39,12 @@ class PasswordResetCommand extends Command
         }
 
         $userIds = is_array($id) ? $id : [$id];
+        $bar = $this->output->createProgressBar(count($userIds));
+        $bar->start();
 
         foreach ($userIds as $id) {
             $user = $this->userClass::find((int) $id);
+            $bar->advance();
             if (! $user) {
                 $this->error("User $id not found");
                 continue;
@@ -50,16 +53,22 @@ class PasswordResetCommand extends Command
             $user->update(['password' => Hash::make($password)]);
         }
 
-        $this->info('Passwords have been reset');
+        $bar->finish();
+        $this->info("\nPasswords have been reset");
     }
 
     protected function handleAllUsers($password)
     {
         $users = $this->userClass::all();
+        $bar = $this->output->createProgressBar(count($users));
+        $bar->start();
+
         foreach ($users as $user) {
             $user->update(['password' => Hash::make($password)]);
+            $bar->advance();
         }
 
-        $this->info('All passwords have been reset');
+        $bar->finish();
+        $this->info("\nAll passwords have been reset");
     }
 }
